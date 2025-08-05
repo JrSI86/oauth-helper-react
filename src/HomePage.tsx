@@ -7,6 +7,8 @@ function HomePage() {
   const [redirectUri, setRedirectUri] = useState('https://localhost:3000/redirect/');
   const [scopes, setScopes] = useState('openid');
 
+  const [backendUrl, setBackendUrl] = useState('');
+
   const [savedEnvs, setSavedEnvs] = useState<Record<string, any>>({});
   const [newEnvName, setNewEnvName] = useState('');
 
@@ -25,6 +27,7 @@ function HomePage() {
     setClientId(config.clientId);
     setRedirectUri(config.redirectUri);
     setScopes(config.scopes);
+    setBackendUrl(config.backendUrl);
   };
 
   const handleSaveEnv = () => {
@@ -33,7 +36,7 @@ function HomePage() {
       return;
     }
 
-    const newConfig = { authUrl, clientId, redirectUri, scopes };
+    const newConfig = { authUrl, clientId, redirectUri, scopes, backendUrl };
     const updatedEnvs = { ...savedEnvs, [newEnvName.toUpperCase()]: newConfig };
 
     localStorage.setItem('oauthHelperEnvironments', JSON.stringify(updatedEnvs));
@@ -43,7 +46,7 @@ function HomePage() {
   };
 
 const startLogin = () => {
-    if (!authUrl || !clientId || !redirectUri) {
+    if (!authUrl || !clientId || !redirectUri || !backendUrl) {
         alert('Por favor, preencha os campos de URL de Autorização, Client ID e Redirect URI.');
         return;
     }
@@ -52,7 +55,9 @@ const startLogin = () => {
         authUrl: authUrl, 
         clientId: clientId, 
         redirectUri: redirectUri, 
-        scopes: scopes 
+        scopes: scopes,
+        backendUrl: backendUrl
+        
     };
     sessionStorage.setItem('oauthConfig', JSON.stringify(config));
 
@@ -98,6 +103,10 @@ const startLogin = () => {
         <div className="form-group">
             <label htmlFor="scopes">Scopes</label>
             <input type="text" id="scopes" value={scopes} onChange={(e) => setScopes(e.target.value)} />
+        </div>
+        <div className="form-group">
+            <label htmlFor="backendUrl">URL do Back-end (API de Autenticação)</label>
+            <input type="text" id="backendUrl" placeholder="https://sua-api.com" value={backendUrl} onChange={(e) => setBackendUrl(e.target.value)} />
         </div>
       </div>
 
