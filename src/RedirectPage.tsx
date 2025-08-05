@@ -1,4 +1,3 @@
-// src/RedirectPage.tsx
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
@@ -20,9 +19,8 @@ function RedirectPage() {
       setErrorMessage(`${error}: ${errorDescription || 'Sem descrição.'}`);
     }
 
-    // Limpa a URL para segurança
     window.history.replaceState({}, document.title, window.location.pathname);
-  }, []); // O array vazio [] faz este efeito rodar apenas uma vez, quando o componente monta
+  }, []);
 
   const copyToClipboard = () => {
     if (capturedCode) {
